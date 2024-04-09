@@ -9,3 +9,24 @@ datasource db {
   provider = "mysql"
   url      = env("DATABASE_URL")
 }
+
+model Product {
+  id String  @id @default(uuid())
+  photo String
+  type String
+  format String
+  title String
+  author String
+  ourPrice Decimal
+  standardPrice Decimal
+  description String @default("") @db.VarChar(5000)
+  category String
+  publisher String
+  releaseDate String
+  numberOfPages Int?
+  recordingLength String?
+
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
