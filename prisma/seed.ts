@@ -1,4 +1,5 @@
 import { PrismaClient } from '@prisma/client';
+import { Role } from './enums/role';
 const db = new PrismaClient();
 
 function getProducts() {
@@ -166,10 +167,67 @@ function getProducts() {
   ];
 }
 
+function getUsers() {
+  return [
+    {
+      id: 'fd105551-0f0d-4a9f-bc41-c559c8a17256',
+      email: 'j.steinbeck@gmail.com',
+      name: 'John Steinbeck',
+      address: '123 Main St, Springfield, IL 62701, USA',
+      role: Role.ADMIN,
+    },
+    {
+      id: 'c920c7b9-a67d-4edb-8ce7-e3c9f3889e56',
+      email: 'adam.smith.1977@gmail.com',
+      name: 'Adam Smith',
+      address: '10 Downing St, Westminster, London SW1A 2AA, UK',
+      role: Role.USER,
+    },
+    {
+      id: 'fd105551-0f0d-4a9f-bc41-c559c8a17258',
+      email: 'olivia.sanders.1988@yahoo.com',
+      name: 'Olivia Sanders',
+      address: '100 Wellington St, Ottawa, ON K1A 0A6, Canada',
+      role: Role.USER,
+    },
+  ];
+}
+
+function getPasswords() {
+  return [
+    {
+      user: { connect: { id: 'fd105551-0f0d-4a9f-bc41-c559c8a17256' } },
+      hashedPassword: 'tested_hashed_password_1',
+    },
+    {
+      user: { connect: { id: 'c920c7b9-a67d-4edb-8ce7-e3c9f3889e56' } },
+      hashedPassword: 'tested_hashed_password_2',
+    },
+    {
+      user: { connect: { id: 'fd105551-0f0d-4a9f-bc41-c559c8a17258' } },
+      hashedPassword: 'tested_hashed_password_3',
+    },
+  ];
+}
+
 async function seed() {
+  await db.user.deleteMany();
+  await db.product.deleteMany();
+  await db.password.deleteMany();
+
   await Promise.all(
     getProducts().map((product) => {
       return db.product.create({ data: product });
+    }),
+  );
+  await Promise.all(
+    getUsers().map((user) => {
+      return db.user.create({ data: user });
+    }),
+  );
+  await Promise.all(
+    getPasswords().map((pass) => {
+      return db.password.create({ data: pass });
     }),
   );
 }
