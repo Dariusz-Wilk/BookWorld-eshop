@@ -9,8 +9,10 @@ import {
   UseGuards,
   Request,
   Response,
+  Delete,
 } from '@nestjs/common';
 import { LocalAuthGuard } from './local-auth.guard';
+import { JwtAuthGuard } from './jwt-auth.guard';
 
 @Controller('auth')
 export class AuthController {
@@ -46,6 +48,15 @@ export class AuthController {
     res.send({
       message: 'success',
       user: req.user,
+    });
+  }
+
+  @UseGuards(JwtAuthGuard)
+  @Delete('logout')
+  async logout(@Response() res) {
+    res.clearCookie('auth', { httpOnly: true });
+    res.send({
+      message: 'success',
     });
   }
 }
