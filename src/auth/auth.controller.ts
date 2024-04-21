@@ -1,7 +1,15 @@
 import { Controller } from '@nestjs/common';
 import { AuthService } from './auth.service';
 import { RegisterDTO } from './dtos/register.dto';
-import { Post, Body, HttpException, HttpStatus } from '@nestjs/common';
+import {
+  Post,
+  Body,
+  HttpException,
+  HttpStatus,
+  UseGuards,
+  Request,
+} from '@nestjs/common';
+import { LocalAuthGuard } from './local-auth.guard';
 
 @Controller('auth')
 export class AuthController {
@@ -27,5 +35,11 @@ export class AuthController {
         HttpStatus.INTERNAL_SERVER_ERROR,
       );
     }
+  }
+
+  @UseGuards(LocalAuthGuard)
+  @Post('login')
+  async login(@Request() req) {
+    return req.user;
   }
 }
