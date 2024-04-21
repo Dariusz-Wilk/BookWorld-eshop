@@ -3,15 +3,18 @@ import {
   NotFoundException,
   Param,
   ParseUUIDPipe,
+  UseGuards,
 } from '@nestjs/common';
 import { ProductsService } from './products.service';
 import { Get } from '@nestjs/common';
+import { JwtAuthGuard } from 'src/auth/jwt-auth.guard';
 
 @Controller('products')
 export class ProductsController {
   constructor(private productsService: ProductsService) {}
 
   @Get('/')
+  @UseGuards(JwtAuthGuard)
   getAllProducts(): any {
     return this.productsService.getAll();
   }

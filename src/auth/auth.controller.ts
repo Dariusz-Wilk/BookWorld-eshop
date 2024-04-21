@@ -8,6 +8,7 @@ import {
   HttpStatus,
   UseGuards,
   Request,
+  Response,
 } from '@nestjs/common';
 import { LocalAuthGuard } from './local-auth.guard';
 
@@ -39,7 +40,12 @@ export class AuthController {
 
   @UseGuards(LocalAuthGuard)
   @Post('login')
-  async login(@Request() req) {
-    return req.user;
+  async login(@Request() req, @Response() res) {
+    const tokens = await this.authService.createSession(req.user);
+    res.cookie('auth', tokens, { httpOnly: true });
+    res.send({
+      message: 'success',
+      user: req.user,
+    });
   }
 }
