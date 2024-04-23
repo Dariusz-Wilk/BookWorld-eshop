@@ -6,7 +6,10 @@ import {
   Delete,
   ParseUUIDPipe,
   NotFoundException,
+  UseGuards,
 } from '@nestjs/common';
+import { AdminAuthGuard } from 'src/auth/admin-auth.guard';
+import { JwtAuthGuard } from 'src/auth/jwt-auth.guard';
 
 @Controller('users')
 export class UsersController {
@@ -25,6 +28,8 @@ export class UsersController {
   }
 
   @Delete('/:id')
+  @UseGuards(AdminAuthGuard)
+  @UseGuards(JwtAuthGuard)
   async removeUserById(@Param('id', new ParseUUIDPipe()) id: string) {
     const user = await this.userService.getUserById(id);
     if (!user) throw new NotFoundException('User not found');
