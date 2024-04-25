@@ -14,6 +14,7 @@ model Product {
   id String  @id @default(uuid())
   photo String
   type String
+  cover String?
   format String
   title String
   author String
@@ -26,7 +27,37 @@ model Product {
   numberOfPages Int?
   recordingLength String?
 
+  orderProducts   OrderProduct[]
+  
 
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+model Order {
+  id         String      @id @default(uuid())
+  user       User        @relation(fields: [userId], references: [id])
+  userId     String
+  date       DateTime
+  comment    String?
+  clientName String?
+  email      String?
+  address    String?
+  totalPrice Decimal
+  orderProducts OrderProduct[]
+  createdAt  DateTime    @default(now())
+  updatedAt  DateTime    @updatedAt
+}
+
+model OrderProduct {
+  id        String   @id @default(uuid())
+  order     Order    @relation(fields: [orderId], references: [id], onDelete: Cascade)
+  orderId   String
+  product   Product  @relation(fields: [productId], references: [id])
+  productId String
+  amount    Int
+  coverFormat     String?
+  comment   String?
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
 }
@@ -44,6 +75,7 @@ model User {
   role     Role      @default(USER)
   password Password?
 
+  orders  Order[]
 }
 
 model Password {

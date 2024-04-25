@@ -7,7 +7,13 @@ export class ProductsService {
   constructor(private prismaService: PrismaService) {}
 
   public getAll(): Promise<Product[]> {
-    return this.prismaService.product.findMany();
+    return this.prismaService.product.findMany({
+      include: {
+        orderProducts: {
+          include: { order: { include: { user: true } } },
+        },
+      },
+    });
   }
 
   public getBookById(id: Product['id']): Promise<Product | null> {

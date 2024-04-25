@@ -210,10 +210,60 @@ function getPasswords() {
   ];
 }
 
+function getOrders() {
+  return [
+    {
+      id: '2674b233-125b-4804-8b20-c3ab34e128ja',
+      user: { connect: { id: 'fd105551-0f0d-4a9f-bc41-c559c8a17256' } },
+      date: new Date(),
+      comment: 'No comment here',
+      clientName: 'John Steinbeck',
+      email: 'j.steinbeck@gmail.com',
+      address: '123 Main St, Springfield, IL 62701, USA',
+      totalPrice: 73.0,
+    },
+    {
+      id: '2674b233-125b-4824-8b20-c3ab34e728jb',
+      user: { connect: { id: 'fd105551-0f0d-4a9f-bc41-c559c8a17258' } },
+      date: new Date(),
+      comment: 'Use as good package protection as possible',
+      clientName: 'Olivia Sanders',
+      email: 'o.sanders@gmail.com',
+      address: '100 Wellington St, Ottawa, ON K1A 0A6, Canada',
+      totalPrice: 84.49,
+    },
+  ];
+}
+
+function getOrderProducts() {
+  return [
+    {
+      order: { connect: { id: '2674b233-125b-4804-8b20-c3ab34e128ja' } },
+      product: { connect: { id: 'fd105551-0f0d-4a9f-bc41-c559c8a17256' } },
+      amount: 1,
+      coverFormat: 'Hard cover',
+    },
+    {
+      order: { connect: { id: '2674b233-125b-4804-8b20-c3ab34e128ja' } },
+      product: { connect: { id: 'c920c7b9-a67d-4edb-8ce7-e3c9f3889e56' } },
+      amount: 1,
+      coverFormat: 'Soft cover',
+    },
+    {
+      order: { connect: { id: '2674b233-125b-4824-8b20-c3ab34e728jb' } },
+      product: { connect: { id: 'fd105551-0f0d-4a9f-bc41-c559c8a17258' } },
+      amount: 1,
+      coverFormat: 'Hard cover',
+    },
+  ];
+}
+
 async function seed() {
   await db.user.deleteMany();
   await db.product.deleteMany();
   await db.password.deleteMany();
+  await db.order.deleteMany();
+  await db.orderProduct.deleteMany();
 
   await Promise.all(
     getProducts().map((product) => {
@@ -228,6 +278,16 @@ async function seed() {
   await Promise.all(
     getPasswords().map((pass) => {
       return db.password.create({ data: pass });
+    }),
+  );
+  await Promise.all(
+    getOrders().map((order) => {
+      return db.order.create({ data: order });
+    }),
+  );
+  await Promise.all(
+    getOrderProducts().map((orderProd) => {
+      return db.orderProduct.create({ data: orderProd });
     }),
   );
 }
