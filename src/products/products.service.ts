@@ -12,6 +12,11 @@ export class ProductsService {
         orderProducts: {
           include: { order: { include: { user: true } } },
         },
+        users: {
+          include: {
+            user: true,
+          },
+        },
       },
     });
   }

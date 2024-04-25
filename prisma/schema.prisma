@@ -28,6 +28,7 @@ model Product {
   recordingLength String?
 
   orderProducts   OrderProduct[]
+  users ProductAndUser[]
   
 
   createdAt DateTime @default(now())
@@ -62,6 +63,15 @@ model OrderProduct {
   updatedAt DateTime @updatedAt
 }
 
+model ProductAndUser {
+  product   Product @relation(fields: [bookId], references: [id])
+  bookId String 
+  user   User @relation(fields: [userId], references: [id])
+  userId String 
+
+  @@id([bookId, userId])
+}
+
 enum Role {
   USER
   ADMIN
@@ -76,6 +86,7 @@ model User {
   password Password?
 
   orders  Order[]
+  products ProductAndUser[]
 }
 
 model Password {

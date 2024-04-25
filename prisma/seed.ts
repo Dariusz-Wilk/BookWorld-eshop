@@ -5,7 +5,7 @@ const db = new PrismaClient();
 function getProducts() {
   return [
     {
-      id: 'fd105551-0f0d-4a9f-bc41-c559c8a17256',
+      id: 'fd105551-0f0d-4a9f-bc41-c559c8a17a22',
       photo: 'bastion-stephen-king-1',
       type: 'book',
       format: 'paper',
@@ -37,7 +37,7 @@ function getProducts() {
       numberOfPages: 1104,
     },
     {
-      id: 'fd105551-0f0d-4a9f-bc41-c559c8a17258',
+      id: 'fd105551-0f0d-4a9f-bc41-c559c8a17b12',
       photo: 'hobbit-tolkien-1',
       type: 'book',
       format: 'paper',
@@ -239,7 +239,7 @@ function getOrderProducts() {
   return [
     {
       order: { connect: { id: '2674b233-125b-4804-8b20-c3ab34e128ja' } },
-      product: { connect: { id: 'fd105551-0f0d-4a9f-bc41-c559c8a17256' } },
+      product: { connect: { id: 'fd105551-0f0d-4a9f-bc41-c559c8a17a22' } },
       amount: 1,
       coverFormat: 'Hard cover',
     },
@@ -251,9 +251,25 @@ function getOrderProducts() {
     },
     {
       order: { connect: { id: '2674b233-125b-4824-8b20-c3ab34e728jb' } },
-      product: { connect: { id: 'fd105551-0f0d-4a9f-bc41-c559c8a17258' } },
+      product: { connect: { id: 'fd105551-0f0d-4a9f-bc41-c559c8a17b12' } },
       amount: 1,
       coverFormat: 'Hard cover',
+    },
+  ];
+}
+function getProductsAndUsers() {
+  return [
+    {
+      product: { connect: { id: 'fd105551-0f0d-4a9f-bc41-c559c8a17a22' } },
+      user: { connect: { id: 'fd105551-0f0d-4a9f-bc41-c559c8a17256' } },
+    },
+    {
+      product: { connect: { id: 'fd105551-0f0d-4a9f-bc41-c559c8a17a22' } },
+      user: { connect: { id: 'c920c7b9-a67d-4edb-8ce7-e3c9f3889e56' } },
+    },
+    {
+      product: { connect: { id: 'fd105551-0f0d-4a9f-bc41-c559c8a17b12' } },
+      user: { connect: { id: 'fd105551-0f0d-4a9f-bc41-c559c8a17258' } },
     },
   ];
 }
@@ -264,6 +280,7 @@ async function seed() {
   await db.password.deleteMany();
   await db.order.deleteMany();
   await db.orderProduct.deleteMany();
+  await db.productAndUser.deleteMany();
 
   await Promise.all(
     getProducts().map((product) => {
@@ -288,6 +305,11 @@ async function seed() {
   await Promise.all(
     getOrderProducts().map((orderProd) => {
       return db.orderProduct.create({ data: orderProd });
+    }),
+  );
+  await Promise.all(
+    getProductsAndUsers().map((prodAndUser) => {
+      return db.productAndUser.create({ data: prodAndUser });
     }),
   );
 }
