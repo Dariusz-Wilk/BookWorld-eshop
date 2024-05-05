@@ -21,7 +21,7 @@ function getProducts() {
       numberOfPages: 1088,
     },
     {
-      id: 'c920c7b9-a67d-4edb-8ce7-e3c9f3889e56',
+      id: 'c920c7b9-a67d-4edb-8ce7-e3c9f3889e59',
       photo: 'bastion-stephen-to-1',
       type: 'book',
       format: 'paper',
@@ -245,7 +245,7 @@ function getOrderProducts() {
     },
     {
       order: { connect: { id: '2674b233-125b-4804-8b20-c3ab34e128ja' } },
-      product: { connect: { id: 'c920c7b9-a67d-4edb-8ce7-e3c9f3889e56' } },
+      product: { connect: { id: 'c920c7b9-a67d-4edb-8ce7-e3c9f3889e59' } },
       amount: 1,
       coverFormat: 'Soft cover',
     },
